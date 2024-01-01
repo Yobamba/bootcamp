@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 
+app.use(express.static("public"));
 //Step 3 - Make the styling show up.
 //Hint 1: CSS files are static files!
 //Hint 2: The header and footer are partials.
@@ -16,7 +17,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   //Step 1 - Make the get route work and render the index.ejs file.
+  res.render("index.ejs");
 });
+
+// Function to select a random item from an array
+function getRandomItem(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
 
 app.post("/submit", (req, res) => {
   //Step 2 - Make the generate name functionality work
@@ -26,6 +34,11 @@ app.post("/submit", (req, res) => {
   //scroll down to see the two arrays.
   //2. Send the index.ejs as a response and add the adjective and noun to the res.render
   //3. Test to make sure that the random words display in the h1 element in index.ejs
+
+  const randomAdj = getRandomItem(adj);
+  const randomNoun = getRandomItem(noun);
+  const bandName = randomAdj + " " + randomNoun;
+  res.render("index.ejs", {name:bandName});
 });
 
 app.listen(port, () => {
